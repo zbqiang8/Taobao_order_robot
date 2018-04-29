@@ -56,6 +56,8 @@ class TaobaoClimber:
         # 1.登陆
         try:
             driver.get(self.__login_path)
+            taobao_window = driver.current_window_handle
+            driver.switch_to.window(taobao_window)
         except exceptions.TimeoutException:  # 当页面加载时间超过设定时间，JS来停止加载
             driver.execute_script('window.stop()')
 
@@ -159,6 +161,7 @@ class TaobaoClimber:
 
         # 1.进入待发货订单页面
         driver.get(self.__orders_path)
+        driver.switch_to.window(taobao_window)
         while True:
             # 2.获取当前页面的订单信息
             time.sleep(2)  # 两秒等待页面加载
@@ -191,6 +194,7 @@ class TaobaoClimber:
         try:
             # 1.进入正出售宝贝页面
             driver.get(self.__auction_path)
+            driver.switch_to.window(taobao_window)
             # 2.点击下架
             choose_checkbox = driver.find_element_by_xpath("//*[@id='J_DataTable']/table/tbody[1]/tr[1]/td/input[1]")
             choose_checkbox.click()
@@ -230,6 +234,7 @@ class TaobaoClimber:
         try:
             # 1.进入确认发货页面
             driver.get(self.__deliver_path + orderId)
+            driver.switch_to.window(taobao_window)
             no_need_logistics_a = driver.find_element_by_xpath("//*[@id='dummyTab']/a")
             no_need_logistics_a.click()
             driver.find_element_by_id("logis:noLogis").click()
